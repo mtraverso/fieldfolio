@@ -157,7 +157,7 @@ struct PaywallView: View {
 
                     HStack(spacing: 16) {
                         Link(String(localized: "Terms of Use"), destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-                        Link(String(localized: "Privacy Policy"), destination: URL(string: "https://mtraverso.github.io/fieldfolio/privacy.html")!)
+                        Link(String(localized: "Privacy Policy"), destination: AppLinks.privacy)
                     }
                     .font(.caption)
                     .frame(maxWidth: .infinity)

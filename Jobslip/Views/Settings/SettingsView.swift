@@ -108,8 +108,8 @@ struct SettingsView: View {
 
                 Section(String(localized: "About")) {
                     LabeledContent(String(localized: "Version"), value: appVersion)
-                    Link(String(localized: "Privacy"), destination: URL(string: "https://mtraverso.github.io/fieldfolio/privacy.html")!)
-                    Link(String(localized: "Support"), destination: URL(string: "https://mtraverso.github.io/fieldfolio/support.html")!)
+                    Link(String(localized: "Privacy"), destination: AppLinks.privacy)
+                    Link(String(localized: "Support"), destination: AppLinks.support)
                     Text(String(localized: "Invoices are records, not tax or legal advice."))
                         .font(.caption)
                         .foregroundStyle(.secondary)

@@ -178,7 +178,9 @@ Source captures remain in `6.1/` (1179×2556) and `6.7/` (1320×2868).
 Release build. Branding: FieldFolio.
 
 ## URLs (host docs/ before submit)
-- Privacy: https://mtraverso.github.io/fieldfolio/privacy.html
-- Support: https://mtraverso.github.io/fieldfolio/support.html
+- Privacy: https://mtraverso.github.io/fieldfolio/docs/privacy.html
+- Support: https://mtraverso.github.io/fieldfolio/docs/support.html
+- Privacy (es-MX): https://mtraverso.github.io/fieldfolio/docs/es/privacy.html
+- Support (es-MX): https://mtraverso.github.io/fieldfolio/docs/es/support.html
 - Marketing: optional; can reuse support URL
-- In-app Settings uses the same Privacy/Support URLs.
+- In-app Settings and Paywall open the Spanish pages when the app runs in Spanish.

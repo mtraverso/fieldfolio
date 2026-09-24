@@ -28,6 +28,7 @@
 		6E25025000C9A70A4137A0C7 /* JobLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F25084F713154363CFB8AE /* JobLineItem.swift */; };
 		7848CFC25709A4EE823595C0 /* JobPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B742976CEE1B05199D3AAD38 /* JobPhoto.swift */; };
 		8893EF8B857DCB2D5675DAD8 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D0AAFA7C6AC073E9C0AFB8E /* Theme.swift */; };
+		89F0B42D76BE466A928A6BD8 /* AppLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE63F927778D54769A6141D /* AppLinks.swift */; };
 		8C37C479C576D94C0BFEB889 /* sample-before-room.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A5B8FA941646795DE2556420 /* sample-before-room.jpg */; };
 		A3524FF3EB72F77ACAB9308C /* JobEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E1428C2B73987E3D047721 /* JobEditorView.swift */; };
 		A36D24251E22A3220FBAB059 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 08DB2BE2A10994C8D571D665 /* Localizable.xcstrings */; };
@@ -90,6 +91,7 @@
 		3D7F0F9E2A9E7813BE0A872D /* PDFGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFGenerator.swift; sourceTree = "<group>"; };
 		4179278DC72A094464EA019D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		42E1428C2B73987E3D047721 /* JobEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobEditorView.swift; sourceTree = "<group>"; };
+		4AE63F927778D54769A6141D /* AppLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLinks.swift; sourceTree = "<group>"; };
 		4DC6345C682D52F1CBB93DD0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		4E142B0E6E01E846F08C9A5C /* JobDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailView.swift; sourceTree = "<group>"; };
 		5C433E5F799C3A092E94A83E /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 		C9AE749AF95018EF3614643A /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4AE63F927778D54769A6141D /* AppLinks.swift */,
 				C9869CAAEE0E4E33BDADC5B2 /* BiometricLock.swift */,
 				276D9ED2640DF40AD33A973B /* DataExporter.swift */,
 				BA3D4CC139D73D5F485D0D1A /* EntitlementStore.swift */,
@@ -453,6 +456,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89F0B42D76BE466A928A6BD8 /* AppLinks.swift in Sources */,
 				5E6B5A88337F8CEE4336F35A /* BiometricLock.swift in Sources */,
 				531A50C1DF9A2902CAAB0625 /* BusinessProfile.swift in Sources */,
 				B61CDAF2C66587C89AABFF72 /* Client.swift in Sources */,
