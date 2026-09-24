@@ -32,7 +32,7 @@ struct JobDetailView: View {
         List {
             Section {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text(job.client?.name ?? "No client")
+                    Text(job.client?.name ?? String(localized: "No client"))
                         .font(.title2.weight(.bold))
                     Text(job.serviceName)
                         .font(.headline)
@@ -40,19 +40,19 @@ struct JobDetailView: View {
                     HStack {
                         StatusBadge(status: job.status)
                         Spacer()
-                        Text(job.amount.formatted(currencyCode: currencyCode))
+                        Text(job.total.formatted(currencyCode: currencyCode))
                             .font(.title3.weight(.bold))
                     }
                     Label(job.scheduledAt.formatted(date: .abbreviated, time: .shortened), systemImage: "calendar")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     if let invoiceNumber = job.invoiceNumber {
-                        Text(String(format: "Invoice INV-%04d", invoiceNumber))
+                        Text(String(format: String(localized: "Invoice INV-%04d"), invoiceNumber))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                     if let estimateNumber = job.estimateNumber {
-                        Text(String(format: "Estimate EST-%04d", estimateNumber))
+                        Text(String(format: String(localized: "Estimate EST-%04d"), estimateNumber))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -60,31 +60,65 @@ struct JobDetailView: View {
                 .padding(.vertical, 4)
             }
 
+            let lines = job.effectiveLineItems
+            if lines.count > 1 || job.taxPercent > 0 || job.discountAmount > 0 {
+                Section(String(localized: "Line items")) {
+                    ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(line.title)
+                                if line.quantity != 1 {
+                                    Text("\(line.quantity) × \(line.unitPrice.formatted(currencyCode: currencyCode))")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            Spacer()
+                            Text((line.quantity * line.unitPrice).formatted(currencyCode: currencyCode))
+                        }
+                    }
+                    if job.discountAmount > 0 || job.taxPercent > 0 {
+                        LabeledContent(String(localized: "Subtotal"), value: job.subtotal.formatted(currencyCode: currencyCode))
+                    }
+                    if job.discountAmount > 0 {
+                        LabeledContent(String(localized: "Discount"), value: "−\(job.discountAmount.formatted(currencyCode: currencyCode))")
+                    }
+                    if job.taxPercent > 0 {
+                        LabeledContent(
+                            String(format: String(localized: "Tax (%@%%)"), "\(job.taxPercent)"),
+                            value: job.taxAmount.formatted(currencyCode: currencyCode)
+                        )
+                    }
+                    LabeledContent(String(localized: "Total"), value: job.total.formatted(currencyCode: currencyCode))
+                        .font(.body.weight(.semibold))
+                }
+            }
+
             if !job.notes.isEmpty {
-                Section("Notes") {
+                Section(String(localized: "Notes")) {
                     Text(job.notes)
                 }
             }
 
-            Section("Photos") {
-                photoGrid(title: "Before", kind: .before, photos: job.beforePhotos)
-                photoGrid(title: "After", kind: .after, photos: job.afterPhotos)
+            Section(String(localized: "Photos")) {
+                photoGrid(title: String(localized: "Before"), kind: .before, photos: job.beforePhotos)
+                photoGrid(title: String(localized: "After"), kind: .after, photos: job.afterPhotos)
             }
 
-            Section("Actions") {
+            Section(String(localized: "Actions")) {
                 if job.status == .estimate {
-                    Button("Convert estimate to job") {
+                    Button(String(localized: "Convert estimate to job")) {
                         job.status = .scheduled
                         try? modelContext.save()
                         WidgetSnapshotWriter.refresh()
                     }
-                    Button("Share estimate PDF") {
+                    Button(String(localized: "Share estimate PDF")) {
                         generatePDF(kind: .estimate)
                     }
                 }
 
                 if job.status == .scheduled {
-                    Button("Start job") {
+                    Button(String(localized: "Start job")) {
                         job.status = .inProgress
                         try? modelContext.save()
                         WidgetSnapshotWriter.refresh()
@@ -92,7 +126,7 @@ struct JobDetailView: View {
                 }
 
                 if job.status == .inProgress {
-                    Button("Mark done") {
+                    Button(String(localized: "Mark done")) {
                         job.status = .done
                         job.completedAt = Date()
                         try? modelContext.save()
@@ -103,14 +137,14 @@ struct JobDetailView: View {
                 if job.status == .estimate {
                     EmptyView()
                 } else if job.status == .paid {
-                    Button("Share paid invoice") {
+                    Button(String(localized: "Share paid invoice")) {
                         generatePDF(kind: .invoice)
                     }
                 } else if job.status == .invoiced {
-                    Button("Share invoice PDF") {
+                    Button(String(localized: "Share invoice PDF")) {
                         generatePDF(kind: .invoice)
                     }
-                    Button("Mark paid") {
+                    Button(String(localized: "Mark paid")) {
                         job.status = .paid
                         job.completedAt = Date()
                         try? modelContext.save()
@@ -118,8 +152,7 @@ struct JobDetailView: View {
                     }
                     .foregroundStyle(FieldFolioTheme.success)
                 } else {
-                    // scheduled, inProgress, done
-                    Button("Create invoice PDF") {
+                    Button(String(localized: "Create invoice PDF")) {
                         generatePDF(kind: .invoice)
                     }
                 }
@@ -133,11 +166,11 @@ struct JobDetailView: View {
                 }
             }
         }
-        .navigationTitle("Job")
+        .navigationTitle(String(localized: "Job"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Edit") { showingEditor = true }
+                Button(String(localized: "Edit")) { showingEditor = true }
             }
         }
         .sheet(isPresented: $showingEditor) {
@@ -155,19 +188,19 @@ struct JobDetailView: View {
             }
             .ignoresSafeArea()
         }
-        .confirmationDialog("Add photo", isPresented: Binding(
+        .confirmationDialog(String(localized: "Add photo"), isPresented: Binding(
             get: { photoSourceKind != nil },
             set: { if !$0 { photoSourceKind = nil } }
         ), titleVisibility: .visible) {
-            Button("Camera") {
+            Button(String(localized: "Camera")) {
                 if let kind = photoSourceKind { showingCameraKind = kind }
                 photoSourceKind = nil
             }
-            Button("Photo Library") {
+            Button(String(localized: "Photo Library")) {
                 if let kind = photoSourceKind { showingLibraryKind = kind }
                 photoSourceKind = nil
             }
-            Button("Cancel", role: .cancel) { photoSourceKind = nil }
+            Button(String(localized: "Cancel"), role: .cancel) { photoSourceKind = nil }
         }
         .sheet(item: $exportDocument) { document in
             PDFPreviewView(document: document)
@@ -190,7 +223,9 @@ struct JobDetailView: View {
                 }
             }
             if photos.isEmpty {
-                Text("No \(title.lowercased()) photos")
+                Text(kind == .before
+                      ? String(localized: "No before photos")
+                      : String(localized: "No after photos"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
@@ -208,7 +243,7 @@ struct JobDetailView: View {
                                             modelContext.delete(photo)
                                             try? modelContext.save()
                                         } label: {
-                                            Label("Delete", systemImage: "trash")
+                                            Label(String(localized: "Delete"), systemImage: "trash")
                                         }
                                     }
                             }
@@ -265,10 +300,13 @@ struct JobDetailView: View {
                 businessName: profile.businessName,
                 businessPhone: profile.phone,
                 businessEmail: profile.email,
-                clientName: job.client?.name ?? "Client",
+                clientName: job.client?.name ?? String(localized: "Client"),
                 clientAddress: job.client?.address ?? "",
-                serviceName: job.serviceName,
-                amount: job.amount,
+                lineItems: job.effectiveLineItems.map {
+                    PDFGenerator.LineItem(title: $0.title, quantity: $0.quantity, unitPrice: $0.unitPrice)
+                },
+                taxPercent: job.taxPercent,
+                discountAmount: job.discountAmount,
                 currencyCode: currencyCode,
                 notes: job.notes,
                 number: number,
@@ -276,16 +314,17 @@ struct JobDetailView: View {
                 beforeImages: before,
                 afterImages: after,
                 watermark: entitlements.shouldWatermarkPDFs,
-                isPaid: job.status == .paid
+                isPaid: job.status == .paid,
+                paymentInstructions: profile.paymentInstructions
             )
         )
 
         guard !data.isEmpty else {
-            exportError = "Could not build the PDF. Try again."
+            exportError = String(localized: "Could not build the PDF. Try again.")
             return
         }
 
-        let prefix = kind == .estimate ? "Estimate" : "Invoice"
+        let prefix = kind == .estimate ? String(localized: "Estimate") : String(localized: "Invoice")
         let suggested = String(format: "%@-%04d-%@", prefix, number, job.client?.name ?? "Job")
 
         do {
@@ -294,7 +333,7 @@ struct JobDetailView: View {
             WidgetSnapshotWriter.refresh()
             exportDocument = document
         } catch {
-            exportError = "Could not save the PDF: \(error.localizedDescription)"
+            exportError = String(localized: "Could not save the PDF: \(error.localizedDescription)")
         }
     }
 }

@@ -78,7 +78,7 @@
       <CommandLineArguments>
       </CommandLineArguments>
       <StoreKitConfigurationFileReference
-         identifier = "../../../Jobslip/Jobslip.storekit">
+         identifier = "../../Jobslip/Jobslip.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

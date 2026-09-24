@@ -27,7 +27,7 @@ struct JobsListView: View {
                 Section {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            FilterChip(title: "All", selected: filter == nil) { filter = nil }
+            FilterChip(title: String(localized: "All"), selected: filter == nil) { filter = nil }
                             ForEach(JobStatus.allCases) { status in
                                 FilterChip(title: status.label, selected: filter == status) {
                                     filter = status
@@ -42,8 +42,8 @@ struct JobsListView: View {
 
                 if filteredJobs.isEmpty {
                     EmptyStateView(
-                        title: "No jobs yet",
-                        message: "Add a job or estimate to get started.",
+                        title: String(localized: "No jobs yet"),
+                        message: String(localized: "Add a job or estimate to get started."),
                         systemImage: "briefcase"
                     )
                 } else {
@@ -57,11 +57,11 @@ struct JobsListView: View {
                     .onDelete(perform: delete)
                 }
             }
-            .navigationTitle("Jobs")
+            .navigationTitle(String(localized: "Jobs"))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        if entitlements.canAddJob(currentCount: jobs.count) {
+                        if entitlements.canAddJob(currentCount: jobs.filter { !$0.isSample }.count) {
                             showingNewJob = true
                         } else {
                             showingPaywall = true

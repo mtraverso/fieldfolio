@@ -46,24 +46,13 @@ struct Provider: TimelineProvider {
             )
         }
 
-        if isPro {
-            return SimpleEntry(
-                date: Date(),
-                nextJobTitle: "No upcoming jobs",
-                nextJobTime: "",
-                unpaidTotal: "$0",
-                unpaidCount: 0,
-                isPro: true
-            )
-        }
-
         return SimpleEntry(
             date: Date(),
-            nextJobTitle: "No upcoming jobs",
+            nextJobTitle: String(localized: "No upcoming jobs"),
             nextJobTime: "",
             unpaidTotal: "$0",
             unpaidCount: 0,
-            isPro: false
+            isPro: isPro
         )
     }
 }
@@ -96,17 +85,17 @@ struct JobslipWidgetEntryView: View {
                 }
                 Spacer(minLength: 0)
                 HStack {
-                    Text("Unpaid")
+                    Text(String(localized: "Unpaid"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text(entry.unpaidCount == 0 ? "None" : entry.unpaidTotal)
+                    Text(entry.unpaidCount == 0 ? String(localized: "None") : entry.unpaidTotal)
                         .font(.subheadline.weight(.semibold))
                 }
             } else {
-                Text("Upgrade to Pro")
+                Text(String(localized: "Upgrade to Pro"))
                     .font(.headline)
-                Text("Unlock the Today widget.")
+                Text(String(localized: "Unlock the Today widget."))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer(minLength: 0)
@@ -124,8 +113,8 @@ struct JobslipWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             JobslipWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("FieldFolio Today")
-        .description("Next job and unpaid total.")
+        .configurationDisplayName(String(localized: "FieldFolio Today"))
+        .description(String(localized: "Next job and unpaid total."))
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

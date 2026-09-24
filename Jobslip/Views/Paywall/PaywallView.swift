@@ -17,20 +17,20 @@ struct PaywallView: View {
         let catalog: [(id: String, title: String, subtitle: String, fallback: String)] = [
             (
                 EntitlementStore.monthlyID,
-                "Monthly",
-                "Unlimited everything. Cancel anytime.",
+                String(localized: "Monthly"),
+                String(localized: "Unlimited everything. 7-day free trial."),
                 "$4.99 / month"
             ),
             (
                 EntitlementStore.yearlyID,
-                "Yearly",
-                "Best value. 7-day free trial.",
+                String(localized: "Yearly"),
+                String(localized: "Best value. 7-day free trial."),
                 "$29.99 / year"
             ),
             (
                 EntitlementStore.lifetimeID,
-                "Lifetime",
-                "Pay once. Keep Pro forever.",
+                String(localized: "Lifetime"),
+                String(localized: "Pay once. Keep Pro forever."),
                 "$59.99 once"
             )
         ]
@@ -59,17 +59,17 @@ struct PaywallView: View {
                         Image(systemName: "checkmark.seal.fill")
                             .font(.system(size: 40))
                             .foregroundStyle(FieldFolioTheme.accent)
-                        Text("FieldFolio Pro")
+                        Text(String(localized: "FieldFolio Pro"))
                             .font(.largeTitle.weight(.bold))
-                        Text("Unlimited clients and jobs, clean PDFs without a watermark, home-screen widget, and job reminders.")
+                        Text(String(localized: "Unlimited clients and jobs, clean PDFs without a watermark, home-screen widget, and job reminders."))
                             .foregroundStyle(.secondary)
                     }
 
                     VStack(alignment: .leading, spacing: 12) {
-                        feature("Unlimited clients & jobs")
-                        feature("Clean, professional PDFs")
-                        feature("Today widget")
-                        feature("Job reminders")
+                        feature(String(localized: "Unlimited clients & jobs"))
+                        feature(String(localized: "Clean, professional PDFs"))
+                        feature(String(localized: "Today widget"))
+                        feature(String(localized: "Job reminders"))
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -77,7 +77,7 @@ struct PaywallView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
 
                     if entitlements.isLoadingProducts && entitlements.products.isEmpty {
-                        ProgressView("Loading prices…")
+                        ProgressView(String(localized: "Loading prices…"))
                             .frame(maxWidth: .infinity)
                     }
 
@@ -118,7 +118,7 @@ struct PaywallView: View {
                             .foregroundStyle(FieldFolioTheme.danger)
                     }
 
-                    Button("Restore purchases") {
+                    Button(String(localized: "Restore purchases")) {
                         Task {
                             await entitlements.restore()
                             if entitlements.isPro { dismiss() }
@@ -127,7 +127,7 @@ struct PaywallView: View {
                     .frame(maxWidth: .infinity)
                     .disabled(purchasingProductID != nil)
 
-                    Button("Retry loading prices") {
+                    Button(String(localized: "Retry loading prices")) {
                         Task { await entitlements.loadProducts() }
                     }
                     .frame(maxWidth: .infinity)
@@ -147,17 +147,28 @@ struct PaywallView: View {
                     .frame(maxWidth: .infinity)
                     #endif
 
-                    Text("Free includes 3 clients, 8 jobs, and watermarked PDFs. Cancel anytime in Settings.")
+                    Text(String(localized: "Free includes 3 clients, 8 jobs, and watermarked PDFs."))
                         .font(.caption)
                         .foregroundStyle(.secondary)
+
+                    Text(String(localized: "Payment is charged to your Apple ID at confirmation. Subscriptions renew automatically unless canceled at least 24 hours before the end of the current period. Manage or cancel in Settings > Apple ID > Subscriptions. Lifetime is a one-time purchase."))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+
+                    HStack(spacing: 16) {
+                        Link(String(localized: "Terms of Use"), destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                        Link(String(localized: "Privacy Policy"), destination: URL(string: "https://mtraverso.github.io/fieldfolio/privacy.html")!)
+                    }
+                    .font(.caption)
+                    .frame(maxWidth: .infinity)
                 }
                 .padding()
             }
-            .navigationTitle("Upgrade")
+            .navigationTitle(String(localized: "Upgrade"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { dismiss() }
+                    Button(String(localized: "Close")) { dismiss() }
                 }
             }
             .task {

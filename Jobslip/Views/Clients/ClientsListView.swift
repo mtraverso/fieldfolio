@@ -19,8 +19,8 @@ struct ClientsListView: View {
             List {
                 if clients.isEmpty {
                     EmptyStateView(
-                        title: "No clients",
-                        message: "Add the people you already work for.",
+                        title: String(localized: "No clients"),
+                        message: String(localized: "Add the people you already work for."),
                         systemImage: "person.2"
                     )
                 } else {
@@ -36,7 +36,7 @@ struct ClientsListView: View {
                                         .foregroundStyle(.secondary)
                                 }
                                 if client.defaultRate > 0 {
-                                    Text("Default \(client.defaultRate.formatted(currencyCode: currencyCode))")
+                                    Text(String(localized: "Default \(client.defaultRate.formatted(currencyCode: currencyCode))"))
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
@@ -47,11 +47,11 @@ struct ClientsListView: View {
                     .onDelete(perform: delete)
                 }
             }
-            .navigationTitle("Clients")
+            .navigationTitle(String(localized: "Clients"))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        if entitlements.canAddClient(currentCount: clients.count) {
+                        if entitlements.canAddClient(currentCount: clients.filter { !$0.isSample }.count) {
                             showingNew = true
                         } else {
                             showingPaywall = true
@@ -93,10 +93,10 @@ struct ClientDetailView: View {
     var body: some View {
         List {
             Section {
-                LabeledContent("Phone", value: client.phone.isEmpty ? "—" : client.phone)
-                LabeledContent("Address", value: client.address.isEmpty ? "—" : client.address)
+                LabeledContent(String(localized: "Phone"), value: client.phone.isEmpty ? "—" : client.phone)
+                LabeledContent(String(localized: "Address"), value: client.address.isEmpty ? "—" : client.address)
                 LabeledContent(
-                    "Default rate",
+                    String(localized: "Default rate"),
                     value: client.defaultRate > 0
                         ? client.defaultRate.formatted(currencyCode: currencyCode)
                         : "—"
@@ -110,20 +110,20 @@ struct ClientDetailView: View {
                 Section {
                     if let url = URL(string: "tel:\(client.phone.filter(\.isNumber))") {
                         Link(destination: url) {
-                            Label("Call", systemImage: "phone.fill")
+                            Label(String(localized: "Call"), systemImage: "phone.fill")
                         }
                     }
                     if let url = URL(string: "sms:\(client.phone.filter(\.isNumber))") {
                         Link(destination: url) {
-                            Label("Message", systemImage: "message.fill")
+                            Label(String(localized: "Message"), systemImage: "message.fill")
                         }
                     }
                 }
             }
 
-            Section("Jobs") {
+            Section(String(localized: "Jobs")) {
                 if sortedJobs.isEmpty {
-                    Text("No jobs yet.")
+                    Text(String(localized: "No jobs yet."))
                         .foregroundStyle(.secondary)
                 } else {
                     ForEach(sortedJobs) { job in
@@ -139,7 +139,7 @@ struct ClientDetailView: View {
         .navigationTitle(client.name)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Edit") { showingEditor = true }
+                Button(String(localized: "Edit")) { showingEditor = true }
             }
         }
         .sheet(isPresented: $showingEditor) {
@@ -163,27 +163,27 @@ struct ClientEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Client") {
-                    TextField("Name", text: $name)
-                    TextField("Phone", text: $phone)
+                Section(String(localized: "Client")) {
+                    TextField(String(localized: "Name"), text: $name)
+                    TextField(String(localized: "Phone"), text: $phone)
                         .keyboardType(.phonePad)
-                    TextField("Address", text: $address)
-                    TextField("Default rate", text: $defaultRateText)
+                    TextField(String(localized: "Address"), text: $address)
+                    TextField(String(localized: "Default rate"), text: $defaultRateText)
                         .keyboardType(.decimalPad)
                 }
-                Section("Notes") {
-                    TextField("Notes", text: $notes, axis: .vertical)
+                Section(String(localized: "Notes")) {
+                    TextField(String(localized: "Notes"), text: $notes, axis: .vertical)
                         .lineLimit(3...6)
                 }
             }
-            .navigationTitle(client == nil ? "New client" : "Edit client")
+            .navigationTitle(client == nil ? String(localized: "New client") : String(localized: "Edit client"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                    Button(String(localized: "Cancel")) { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { save() }
+                    Button(String(localized: "Save")) { save() }
                         .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
             }

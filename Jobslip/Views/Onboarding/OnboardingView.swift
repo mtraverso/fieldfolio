@@ -18,20 +18,20 @@ struct OnboardingView: View {
                         Image(systemName: "doc.text.image.fill")
                             .font(.system(size: 48))
                             .foregroundStyle(FieldFolioTheme.accent)
-                        Text("Job book for people who show up and get paid.")
+                        Text(String(localized: "Job book for people who show up and get paid."))
                             .font(.title2.weight(.bold))
-                        Text("Track jobs, before/after photos, estimates, and invoices — all on your phone. No account.")
+                        Text(String(localized: "Track jobs, before/after photos, estimates, and invoices — all on your phone. No account."))
                             .foregroundStyle(.secondary)
                     }
                     .listRowBackground(Color.clear)
                     .padding(.vertical, 8)
                 }
 
-                Section("Your business") {
-                    TextField("Business name", text: $businessName)
-                    TextField("Phone", text: $phone)
+                Section(String(localized: "Your business")) {
+                    TextField(String(localized: "Business name"), text: $businessName)
+                    TextField(String(localized: "Phone"), text: $phone)
                         .keyboardType(.phonePad)
-                    Picker("Currency", selection: $currencyCode) {
+                    Picker(String(localized: "Currency"), selection: $currencyCode) {
                         ForEach(currencies, id: \.self) { code in
                             Text(code).tag(code)
                         }
@@ -42,14 +42,14 @@ struct OnboardingView: View {
                     Button {
                         finish()
                     } label: {
-                        Text("Get started")
+                        Text(String(localized: "Get started"))
                             .frame(maxWidth: .infinity)
                             .fontWeight(.semibold)
                     }
                     .disabled(businessName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
             }
-            .navigationTitle("Welcome to FieldFolio")
+            .navigationTitle(String(localized: "Welcome to FieldFolio"))
             .onAppear {
                 if let profile = profiles.first {
                     businessName = profile.businessName

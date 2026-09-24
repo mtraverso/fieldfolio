@@ -10,6 +10,7 @@ struct JobslipApp: App {
         let schema = Schema([
             Client.self,
             Job.self,
+            JobLineItem.self,
             JobPhoto.self,
             BusinessProfile.self
         ])
@@ -70,9 +71,9 @@ struct LockScreen: View {
             Image(systemName: "lock.fill")
                 .font(.system(size: 48))
                 .foregroundStyle(FieldFolioTheme.accent)
-            Text("FieldFolio is locked")
+            Text(String(localized: "FieldFolio is locked"))
                 .font(.title2.weight(.bold))
-            Button("Unlock") {
+            Button(String(localized: "Unlock")) {
                 Task {
                     isUnlocked = await BiometricLock.authenticate()
                 }

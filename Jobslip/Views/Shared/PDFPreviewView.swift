@@ -35,7 +35,7 @@ struct PDFPreviewView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Done") { dismiss() }
+                        Button(String(localized: "Done")) { dismiss() }
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button {

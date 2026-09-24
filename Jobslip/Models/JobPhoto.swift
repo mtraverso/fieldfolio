@@ -5,7 +5,7 @@ import SwiftData
 final class JobPhoto {
     var id: UUID
     var kindRaw: String
-    var imageData: Data
+    @Attribute(.externalStorage) var imageData: Data
     var createdAt: Date
     var job: Job?
 

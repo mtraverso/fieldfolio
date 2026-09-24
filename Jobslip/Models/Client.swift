@@ -10,6 +10,7 @@ final class Client {
     var defaultRate: Decimal
     var notes: String
     var createdAt: Date
+    var isSample: Bool = false
 
     @Relationship(deleteRule: .cascade, inverse: \Job.client)
     var jobs: [Job]
@@ -19,7 +20,8 @@ final class Client {
         phone: String = "",
         address: String = "",
         defaultRate: Decimal = 0,
-        notes: String = ""
+        notes: String = "",
+        isSample: Bool = false
     ) {
         self.id = UUID()
         self.name = name
@@ -28,6 +30,7 @@ final class Client {
         self.defaultRate = defaultRate
         self.notes = notes
         self.createdAt = Date()
+        self.isSample = isSample
         self.jobs = []
     }
 }

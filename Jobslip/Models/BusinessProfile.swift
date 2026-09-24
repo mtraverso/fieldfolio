@@ -8,6 +8,7 @@ final class BusinessProfile {
     var phone: String
     var email: String
     var currencyCode: String
+    var paymentInstructions: String = ""
     var nextInvoiceNumber: Int
     var nextEstimateNumber: Int
     var hasCompletedOnboarding: Bool
@@ -17,13 +18,15 @@ final class BusinessProfile {
         businessName: String = "",
         phone: String = "",
         email: String = "",
-        currencyCode: String = "USD"
+        currencyCode: String = "USD",
+        paymentInstructions: String = ""
     ) {
         self.id = UUID()
         self.businessName = businessName
         self.phone = phone
         self.email = email
         self.currencyCode = currencyCode
+        self.paymentInstructions = paymentInstructions
         self.nextInvoiceNumber = 1
         self.nextEstimateNumber = 1
         self.hasCompletedOnboarding = false

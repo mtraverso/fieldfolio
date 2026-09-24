@@ -23,7 +23,7 @@ struct TodayView: View {
     private var collectedThisWeek: Decimal {
         jobs
             .filter { $0.status == .paid && ($0.completedAt ?? $0.scheduledAt).isThisWeek }
-            .reduce(Decimal(0)) { $0 + $1.amount }
+            .reduce(Decimal(0)) { $0 + $1.total }
     }
 
     var body: some View {
@@ -32,13 +32,13 @@ struct TodayView: View {
                 Section {
                     HStack(spacing: 12) {
                         MoneyStatCard(
-                            title: "This week",
+                            title: String(localized: "This week"),
                             value: collectedThisWeek.formatted(currencyCode: currencyCode),
                             systemImage: "banknote",
                             tint: FieldFolioTheme.success
                         )
                         MoneyStatCard(
-                            title: "Unpaid",
+                            title: String(localized: "Unpaid"),
                             value: "\(unpaidCount)",
                             systemImage: "exclamationmark.bubble",
                             tint: unpaidCount > 0 ? FieldFolioTheme.warning : FieldFolioTheme.success
@@ -48,9 +48,9 @@ struct TodayView: View {
                     .listRowBackground(Color.clear)
                 }
 
-                Section("Today's jobs") {
+                Section(String(localized: "Today's jobs")) {
                     if todaysJobs.isEmpty {
-                        Text("No jobs scheduled today.")
+                        Text(String(localized: "No jobs scheduled today."))
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(todaysJobs) { job in
@@ -62,7 +62,7 @@ struct TodayView: View {
                 }
 
                 if unpaidCount > 0 {
-                    Section("Needs payment") {
+                    Section(String(localized: "Needs payment")) {
                         ForEach(jobs.filter { $0.status == .invoiced }) { job in
                             NavigationLink(value: job.id) {
                                 JobRowView(job: job, currencyCode: currencyCode)
@@ -71,7 +71,7 @@ struct TodayView: View {
                     }
                 }
             }
-            .navigationTitle("Today")
+            .navigationTitle(String(localized: "Today"))
             .navigationDestination(for: UUID.self) { id in
                 if let job = jobs.first(where: { $0.id == id }) {
                     JobDetailView(job: job)
@@ -80,7 +80,7 @@ struct TodayView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     if entitlements.isPro {
-                        Label("Pro", systemImage: "checkmark.seal.fill")
+                        Label(String(localized: "Pro"), systemImage: "checkmark.seal.fill")
                             .labelStyle(.iconOnly)
                             .foregroundStyle(FieldFolioTheme.accent)
                     }
@@ -97,10 +97,10 @@ struct JobRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(job.client?.name ?? "No client")
+                Text(job.client?.name ?? String(localized: "No client"))
                     .font(.headline)
                 Spacer()
-                Text(job.amount.formatted(currencyCode: currencyCode))
+                Text(job.total.formatted(currencyCode: currencyCode))
                     .font(.subheadline.weight(.semibold))
             }
             Text(job.serviceName)

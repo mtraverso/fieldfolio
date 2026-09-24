@@ -10,16 +10,16 @@ struct ContentView: View {
     var body: some View {
         TabView {
             TodayView()
-                .tabItem { Label("Today", systemImage: "sun.max.fill") }
+                .tabItem { Label(String(localized: "Today"), systemImage: "sun.max.fill") }
 
             JobsListView()
-                .tabItem { Label("Jobs", systemImage: "briefcase.fill") }
+                .tabItem { Label(String(localized: "Jobs"), systemImage: "briefcase.fill") }
 
             ClientsListView()
-                .tabItem { Label("Clients", systemImage: "person.2.fill") }
+                .tabItem { Label(String(localized: "Clients"), systemImage: "person.2.fill") }
 
             SettingsView()
-                .tabItem { Label("Settings", systemImage: "gearshape.fill") }
+                .tabItem { Label(String(localized: "Settings"), systemImage: "gearshape.fill") }
         }
         .tint(FieldFolioTheme.accent)
         .onAppear { pushWidgetSnapshot() }
@@ -52,7 +52,7 @@ struct ContentView: View {
             .sorted { $0.scheduledAt < $1.scheduledAt }
             .first
         let unpaid = jobs.filter { $0.status == .invoiced }
-        let unpaidTotal = unpaid.reduce(Decimal(0)) { $0 + $1.amount }
+        let unpaidTotal = unpaid.reduce(Decimal(0)) { $0 + $1.total }
 
         let timeFormatter = DateFormatter()
         timeFormatter.timeStyle = .short
@@ -60,7 +60,7 @@ struct ContentView: View {
 
         WidgetSnapshotWriter.write(
             .init(
-                nextJobTitle: upcoming.map { "\($0.client?.name ?? "Client") — \($0.serviceName)" } ?? "No upcoming jobs",
+                nextJobTitle: upcoming.map { "\($0.client?.name ?? String(localized: "Client")) — \($0.serviceName)" } ?? String(localized: "No upcoming jobs"),
                 nextJobTime: upcoming.map { timeFormatter.string(from: $0.scheduledAt) } ?? "",
                 unpaidTotal: unpaidTotal.formatted(currencyCode: currency),
                 unpaidCount: unpaid.count,
